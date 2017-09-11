@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:text="通过滑动创建一个简单手势并现场传达给\n学生,学生输入正确手势完成签到"
+        android:textSize="14sp"
+        android:textColor="#B5B4B4"/>
+
+    <com.ares.demo.view.GestureLockViewGroup
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/id_gestureLockViewGroup"
+        android:layout_width="360dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        app:count="3"
+        app:tryTimes="5" />
+
+</LinearLayout>
