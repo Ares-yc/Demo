@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ares.demo.R;
+import com.ares.demo.activity.GestureSignUpActivity;
+import com.ares.demo.view.GestureLockViewGroup;
 
 /**
  * ====================================
@@ -22,6 +24,8 @@ import com.ares.demo.R;
 
 public class SetGestureFragment extends Fragment{
 
+    public GestureLockViewGroup gestureLockViewGroup;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class SetGestureFragment extends Fragment{
 
     //初始化控件
     private void initView(View view) {
-
+        gestureLockViewGroup = view.findViewById(R.id.glv_fragment_set_gesture);
+        gestureLockViewGroup.setOnGestureLockViewListener((GestureLockViewGroup.OnGestureLockViewListener) getActivity());
+        gestureLockViewGroup.setItemMode(((GestureSignUpActivity)getActivity()).mGestureInfos);
     }
 }

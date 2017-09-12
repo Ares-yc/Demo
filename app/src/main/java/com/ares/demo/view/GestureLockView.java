@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.View;
 
 public class GestureLockView extends View {
@@ -84,24 +83,12 @@ public class GestureLockView extends View {
 
         mWidth = MeasureSpec.getSize(widthMeasureSpec);
         mHeight = MeasureSpec.getSize(heightMeasureSpec);
-        Log.e("*****","mWidth = " + mWidth);
-        Log.e("*****","mHeight = " + mHeight);
 
         // 取长和宽中的小值
         mWidth = mWidth < mHeight ? mWidth : mHeight;
         mRadius = mCenterX = mCenterY = mWidth / 2;
         mRadius -= mStrokeWidth / 2;
-
-        // 绘制三角形，初始时是个默认箭头朝上的一个等腰三角形，用户绘制结束后，根据由两个GestureLockView决定需要旋转多少度
-        float mArrowLength = mWidth / 2 * mArrowRate;
-        mArrowPath.moveTo(mWidth / 2, mStrokeWidth + 2);
-        mArrowPath.lineTo(mWidth / 2 - mArrowLength, mStrokeWidth + 2
-                + mArrowLength);
-        mArrowPath.lineTo(mWidth / 2 + mArrowLength, mStrokeWidth + 2
-                + mArrowLength);
-        mArrowPath.close();
-        mArrowPath.setFillType(Path.FillType.WINDING);
-
+        mRadius = (int)(mRadius * 0.7f);
     }
 
     @Override
@@ -127,7 +114,9 @@ public class GestureLockView extends View {
             case STATUS_NO_FINGER:
                 // 绘制外圆
                 mPaint.setStyle(Style.STROKE);
-                mPaint.setColor(mColorNoFingerOutter);
+                mPaint.setStrokeWidth(2);
+//                mPaint.setColor(mColorNoFingerOutter);
+                mPaint.setColor(0xFFB5B4B4);
                 canvas.drawCircle(mCenterX, mCenterY, mRadius, mPaint);
                 break;
 

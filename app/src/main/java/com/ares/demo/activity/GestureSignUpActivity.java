@@ -12,9 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.ares.demo.GestureEntity;
 import com.ares.demo.R;
 import com.ares.demo.fragment.ReleaseSignUpFragment;
 import com.ares.demo.fragment.SetGestureFragment;
+import com.ares.demo.view.GestureLockViewGroup.OnGestureLockViewListener;
+
+import java.util.List;
 
 /**
  * ====================================
@@ -26,7 +30,9 @@ import com.ares.demo.fragment.SetGestureFragment;
  * 修改时间：2017/9/11/011.
  * ====================================
  */
-public class GestureSignUpActivity extends AppCompatActivity implements OnClickListener{
+public class GestureSignUpActivity extends AppCompatActivity implements OnClickListener,OnGestureLockViewListener {
+
+    public static final String TAG = "GestureSignUpActivity";
 
     /**  返回按钮 */
     private ImageView backIv;
@@ -35,6 +41,8 @@ public class GestureSignUpActivity extends AppCompatActivity implements OnClickL
     /**  发布操作按钮 */
     private Button releaseBtn;
     private FragmentManager fm;
+    /**  手势信息 */
+    public List<GestureEntity> mGestureInfos;
 
     private SetGestureFragment setGestureFragment;
     private ReleaseSignUpFragment releaseSignUpFragment;
@@ -80,6 +88,10 @@ public class GestureSignUpActivity extends AppCompatActivity implements OnClickL
                 }
                 break;
             case R.id.btn_activity_gesture_sign_up_next://下一步按钮点击事件实现
+                if (mGestureInfos == null || mGestureInfos.size() <= 0) {
+                    Toast.makeText(GestureSignUpActivity.this,"请先创建手势图案!",Toast.LENGTH_LONG).show();
+                    break;
+                }
                 replaceFragment(releaseSignUpFragment);
                 break;
             case R.id.btn_activity_gesture_sign_up_release://发布按钮点击事件实现
@@ -112,4 +124,18 @@ public class GestureSignUpActivity extends AppCompatActivity implements OnClickL
 
     }
 
+    @Override
+    public void onBlockSelected(int cId) {
+
+    }
+
+    @Override
+    public void onGestureEvent(boolean matched) {
+
+    }
+
+    @Override
+    public void saveGesture(List<GestureEntity> gestureInfos) {
+        this.mGestureInfos = gestureInfos;
+    }
 }

@@ -7,11 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.ares.demo.GestureEntity;
 import com.ares.demo.R;
 import com.ares.demo.view.GestureLockView.Mode;
 
@@ -45,6 +45,7 @@ public class GestureLockViewGroup extends RelativeLayout
 	 * 存储答案
 	 */
 	private int[] mAnswer = { 0, 1, 2, 5, 8 };
+	private List<GestureEntity> gestureInfos = new ArrayList<>();
 	/**
 	 * 保存用户选中的GestureLockView的id
 	 */
@@ -71,11 +72,11 @@ public class GestureLockViewGroup extends RelativeLayout
 	/**
 	 * GestureLockView手指触摸的状态下内圆和外圆的颜色
 	 */
-	private int mFingerOnColor = 0xFF378FC9;
+	private int mFingerOnColor = 0xFF3EDCF8;//0xFF378FC9
 	/**
 	 * GestureLockView手指抬起的状态下内圆和外圆的颜色
 	 */
-	private int mFingerUpColor = 0xFF378FC9;//0xFFFF0000
+	private int mFingerUpColor = 0xFF3EDCF8;//0xFFFF0000
 
 	/**
 	 * 宽度
@@ -119,7 +120,6 @@ public class GestureLockViewGroup extends RelativeLayout
 	{
 		super(context, attrs, defStyle);
 
-		Log.e("*****","GestureLockViewGroup");
 		/**
 		 * 获得所有自定义的参数的值
 		 */
@@ -171,20 +171,14 @@ public class GestureLockViewGroup extends RelativeLayout
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
 	{
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		Log.e("*****","onMeasure");
 		mWidth = MeasureSpec.getSize(widthMeasureSpec);
 		mHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-//		mHeight = mWidth = mWidth < mHeight ? mWidth : mHeight;
-		mHeight = mWidth = 1080;
-
-		// setMeasuredDimension(mWidth, mHeight);
+		mHeight = mWidth = mWidth < mHeight ? mWidth : mHeight;
 
 		// 初始化mGestureLockViews
 		if (mGestureLockViews == null)
 		{
-			Log.e("*****","mGestureLockViews == null");
 			mGestureLockViews = new GestureLockView[mCount * mCount];
 			// 计算每个GestureLockView的宽度
 			mGestureLockViewWidth = (int) (4 * mWidth * 1.0f / (5 * mCount + 1));
@@ -238,12 +232,9 @@ public class GestureLockViewGroup extends RelativeLayout
 				mGestureLockViews[i].setMode(Mode.STATUS_NO_FINGER);
 				addView(mGestureLockViews[i], lockerParams);
 			}
-
-			Log.e(TAG, "mWidth = " + mWidth + " ,  mGestureViewWidth = "
-					+ mGestureLockViewWidth + " , mMarginBetweenLockView = "
-					+ mMarginBetweenLockView);
-
+			restoreGestureInfos();
 		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
 	@Override
@@ -275,7 +266,7 @@ public class GestureLockViewGroup extends RelativeLayout
 					// 设置指引线的起点
 					mLastPathX = child.getLeft() / 2 + child.getRight() / 2;
 					mLastPathY = child.getTop() / 2 + child.getBottom() / 2;
-
+					gestureInfos.add(new GestureEntity(cId,mLastPathX,mLastPathY));
 					if (mChoose.size() == 1)// 当前添加为第一个
 					{
 						mPath.moveTo(mLastPathX, mLastPathY);
@@ -292,50 +283,52 @@ public class GestureLockViewGroup extends RelativeLayout
 			mTmpTarget.y = y;
 			break;
 		case MotionEvent.ACTION_UP:
-
 			mPaint.setColor(mFingerUpColor);
 			mPaint.setAlpha(50);
-			this.mTryTimes--;
-
-			// 回调是否成功
-			if (mOnGestureLockViewListener != null && mChoose.size() > 0)
-			{
-				mOnGestureLockViewListener.onGestureEvent(checkAnswer());
-				if (this.mTryTimes == 0)
-				{
-					mOnGestureLockViewListener.onUnmatchedExceedBoundary();
-				}
-			}
-
-			Log.e(TAG, "mUnMatchExceedBoundary = " + mTryTimes);
-			Log.e(TAG, "mChoose = " + mChoose);
+			mOnGestureLockViewListener.saveGesture(gestureInfos);
 			// 将终点设置位置为起点，即取消指引线
 			mTmpTarget.x = mLastPathX;
 			mTmpTarget.y = mLastPathY;
-
 			// 改变子元素的状态为UP
 			changeItemMode();
-			
-			// 计算每个元素中箭头需要旋转的角度
-			for (int i = 0; i + 1 < mChoose.size(); i++)
-			{
-				int childId = mChoose.get(i);
-				int nextChildId = mChoose.get(i + 1);
-
-				GestureLockView startChild = (GestureLockView) findViewById(childId);
-				GestureLockView nextChild = (GestureLockView) findViewById(nextChildId);
-
-				int dx = nextChild.getLeft() - startChild.getLeft();
-				int dy = nextChild.getTop() - startChild.getTop();
-				// 计算角度
-				int angle = (int) Math.toDegrees(Math.atan2(dy, dx)) + 90;
-				startChild.setArrowDegree(angle);
-			}
 			break;
-
 		}
 		invalidate();
 		return true;
+	}
+
+	public void setItemMode(List<GestureEntity> _gestureInfos){
+		if (_gestureInfos == null) return;
+		this.gestureInfos = _gestureInfos;
+		this.mChoose.clear();
+		for (GestureEntity entity : _gestureInfos) {
+			this.mChoose.add(entity.gesturePosition);
+		}
+	}
+
+	public void restoreGestureInfos(){
+		mPaint.setColor(mFingerOnColor);
+		mPaint.setAlpha(50);
+		for (int i = 0;i < gestureInfos.size();i++) {
+			GestureLockView gestureView = mGestureLockViews[gestureInfos.get(i).gesturePosition-1];
+
+			gestureView.setMode(Mode.STATUS_FINGER_ON);
+			// 设置指引线的起点
+			mLastPathX = gestureInfos.get(i).gestureX;
+			mLastPathY = gestureInfos.get(i).gestureY;
+			if (i == 0)// 当前添加为第一个
+			{
+				mPath.moveTo(mLastPathX, mLastPathY);
+			} else
+			// 非第一个，将两者使用线连上
+			{
+				mPath.lineTo(mLastPathX, mLastPathY);
+			}
+			// 指引线的终点
+			mTmpTarget.x = mLastPathX;
+			mTmpTarget.y = mLastPathY;
+			invalidate();
+		}
 	}
 
 	private void changeItemMode()
@@ -355,6 +348,7 @@ public class GestureLockViewGroup extends RelativeLayout
 	 */
 	private void reset()
 	{
+		gestureInfos.clear();
 		mChoose.clear();
 		mPath.reset();
 		for (GestureLockView gestureLockView : mGestureLockViews)
@@ -380,7 +374,7 @@ public class GestureLockViewGroup extends RelativeLayout
 
 		return true;
 	}
-	
+
 	/**
 	 * 检查当前左边是否在child中
 	 * @param child
@@ -433,26 +427,6 @@ public class GestureLockViewGroup extends RelativeLayout
 		this.mOnGestureLockViewListener = listener;
 	}
 
-	/**
-	 * 对外公布设置答案的方法
-	 * 
-	 * @param answer
-	 */
-	public void setAnswer(int[] answer)
-	{
-		this.mAnswer = answer;
-	}
-
-	/**
-	 * 设置最大实验次数
-	 * 
-	 * @param boundary
-	 */
-	public void setUnMatchExceedBoundary(int boundary)
-	{
-		this.mTryTimes = boundary;
-	}
-
 	@Override
 	public void dispatchDraw(Canvas canvas)
 	{
@@ -476,20 +450,21 @@ public class GestureLockViewGroup extends RelativeLayout
 	{
 		/**
 		 * 单独选中元素的Id
-		 * 
+		 *
 		 */
-		public void onBlockSelected(int cId);
+		void onBlockSelected(int cId);
 
 		/**
 		 * 是否匹配
-		 * 
+		 *
 		 * @param matched
 		 */
-		public void onGestureEvent(boolean matched);
+		void onGestureEvent(boolean matched);
 
 		/**
-		 * 超过尝试次数
+		 * 保存手势
 		 */
-		public void onUnmatchedExceedBoundary();
+		void saveGesture(List<GestureEntity> mGestureInfos);
+
 	}
 }
