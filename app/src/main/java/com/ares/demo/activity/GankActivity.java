@@ -16,13 +16,9 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class GankActivity extends AppCompatActivity implements OnResponseListener<String>{
 
@@ -59,24 +55,11 @@ public class GankActivity extends AppCompatActivity implements OnResponseListene
     public void onSucceed(int what, Response<String> response) {
         if (response.get() == null) return;
         Log.e("*****","onSucceed");
-        GankResultEntity resultEntity = JsonUtil.getInstance().fromJson(response.get(),new TypeToken<GankResultEntity>(){}.getType());
+        GankResultEntity<GankAndroidEntity> resultEntity = JsonUtil.getInstance().fromJson(response.get(),new TypeToken<GankResultEntity<GankAndroidEntity>>(){}.getType());
         if (resultEntity.error) return;
         List<GankAndroidEntity> androidEntity = resultEntity.results;
         if (androidEntity == null) androidEntity = new ArrayList<>();
         if (androidEntity.size() > 0) {
-            try {
-                String ts = androidEntity.get(0).createdAt.replace("Z", " UTC");
-                Log.e("*****","ts = " + ts);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
-                Date dt = sdf.parse(ts);
-                TimeZone tz = sdf.getTimeZone();
-                Calendar c = sdf.getCalendar();
-                Log.e("*****",getString(c));
-                Log.e("*****",androidEntity.get(0).desc);
-                Log.e("*****",androidEntity.get(0).url);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
     }
 

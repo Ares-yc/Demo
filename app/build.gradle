@@ -31,4 +31,5 @@ dependencies {
     compile 'com.yanzhenjie.nohttp:nohttp:1.1.3'
     compile 'com.yanzhenjie.nohttp:okhttp:1.1.3'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:design:26.0.0-alpha1'
 }

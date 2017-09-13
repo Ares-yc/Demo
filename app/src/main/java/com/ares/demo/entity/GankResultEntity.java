@@ -13,8 +13,8 @@ import java.util.List;
  * ====================================
  */
 
-public class GankResultEntity {
+public class GankResultEntity<T> {
 
     public boolean error;
-    public List<GankAndroidEntity> results;
+    public List<T> results;
 }
