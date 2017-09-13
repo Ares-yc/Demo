@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.ares.demo.GestureEntity;
+import com.ares.demo.entity.GestureEntity;
 import com.ares.demo.R;
 import com.ares.demo.view.GestureLockView.Mode;
 

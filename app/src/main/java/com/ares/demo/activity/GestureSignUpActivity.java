@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ares.demo.GestureEntity;
+import com.ares.demo.entity.GestureEntity;
 import com.ares.demo.R;
 import com.ares.demo.fragment.ReleaseSignUpFragment;
 import com.ares.demo.fragment.SetGestureFragment;

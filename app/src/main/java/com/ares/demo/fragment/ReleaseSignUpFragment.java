@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ares.demo.GestureEntity;
 import com.ares.demo.R;
 import com.ares.demo.activity.GestureSignUpActivity;
+import com.ares.demo.entity.GestureEntity;
 
 import java.util.List;
 

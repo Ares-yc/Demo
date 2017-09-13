@@ -1,4 +1,4 @@
-package com.ares.demo;
+package com.ares.demo.entity;
 
 import java.io.Serializable;
 
