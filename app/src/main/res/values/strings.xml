@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Demo</string>
     
-    <string name="un_sign_up">未签到</string>
-    <string name="sign_up">已签到</string>
+    <string name="un_sign_up">未签到 (%1$d)</string>
+    <string name="sign_up">已签到 (%1$d)</string>
 </resources>

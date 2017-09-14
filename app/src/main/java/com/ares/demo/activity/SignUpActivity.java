@@ -30,12 +30,14 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
     private List<Fragment> fragmentList;
     private UnSignUpFragment unSignUpFragment;
     private SignUpFragment signUpFragment;
+    private MyFragmentPagerAdapter myFragmentPagerAdapter;
+    private String[] titleTabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        
+
         initView();
         initListener();
     }
@@ -48,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
 
         fragmentList = new ArrayList<>();
 
-        String[] titleTabs = {getString(R.string.un_sign_up),getString(R.string.sign_up)};
+        titleTabs = new String[]{getString(R.string.un_sign_up,0), getString(R.string.sign_up,0)};
 
         FragmentManager fm = getSupportFragmentManager();
         unSignUpFragment = (UnSignUpFragment) fm.findFragmentByTag(SPUtil.getInstance(this).getString(Constants.TAG_UN_SIGN_UP_FRAGMENT, Constants.TAG_UN_SIGN_UP_FRAGMENT));
@@ -64,12 +66,13 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
         fragmentList.add(unSignUpFragment);
         fragmentList.add(signUpFragment);
 
-        MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(
+        myFragmentPagerAdapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(), this, titleTabs, fragmentList);
         contentVp.setAdapter(myFragmentPagerAdapter);
 
         tabLayout.setupWithViewPager(contentVp);
         tabLayout.setOnTabSelectedListener(this);
+
 
     }
 
@@ -77,6 +80,25 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
         contentVp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         contentVp.setOffscreenPageLimit(2);
         contentVp.setCurrentItem(0);
+    }
+
+    /**
+     * 当未签到/已签到列表数量
+     * 发生改变时调用该方法更新Tab
+     * @param tag   Constants.TAG_UN_SIGN_UP_TAB 未签到标记
+     *               Constants.TAG_SIGN_UP_TAB    已签到标记
+     * @param count 变化后的数量
+     */
+    public void setTabCount(int tag, int count){
+        switch (tag){
+            case Constants.TAG_UN_SIGN_UP_TAB:
+                titleTabs[0] = getString(R.string.un_sign_up,count);
+                break;
+            case Constants.TAG_SIGN_UP_TAB:
+                titleTabs[1] = getString(R.string.sign_up,count);
+                break;
+        }
+        myFragmentPagerAdapter.notifyDataSetChanged();
     }
 
     @Override

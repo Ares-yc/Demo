@@ -15,4 +15,7 @@ public class Constants {
 
     public static final String TAG_UN_SIGN_UP_FRAGMENT = "unSignUpFragment";
     public static final String TAG_SIGN_UP_FRAGMENT = "unSignUpFragment";
+
+    public static final int TAG_UN_SIGN_UP_TAB = 0x001;
+    public static final int TAG_SIGN_UP_TAB = 0x002;
 }
