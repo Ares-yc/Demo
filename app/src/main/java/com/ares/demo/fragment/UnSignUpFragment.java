@@ -50,11 +50,11 @@ public class UnSignUpFragment extends Fragment implements OnClickListener{
 
     private void initView(View view) {
         parent = (SignUpActivity) getActivity();
-        changeBtn = view.findViewById(R.id.btn_fragment_un_sign_up_change);
+//        changeBtn = view.findViewById(R.id.btn_fragment_un_sign_up_change);
     }
 
     private void initListener() {
-        changeBtn.setOnClickListener(this);
+//        changeBtn.setOnClickListener(this);
     }
 
     private void initData() {

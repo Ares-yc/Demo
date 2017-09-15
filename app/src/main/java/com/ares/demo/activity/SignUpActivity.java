@@ -19,6 +19,7 @@ import com.ares.demo.utils.SPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SignUpActivity extends AppCompatActivity implements OnTabSelectedListener {
 
@@ -49,8 +50,9 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
         contentVp = (ViewPager) findViewById(R.id.vp_activity_sign_up_content);
 
         fragmentList = new ArrayList<>();
-
-        titleTabs = new String[]{getString(R.string.un_sign_up,0), getString(R.string.sign_up,0)};
+        String tabUnsignUpStr = String.format(Locale.getDefault(),getString(R.string.un_sign_up),0);
+        String tabSignUpStr = String.format(Locale.getDefault(),getString(R.string.sign_up),0);
+        titleTabs = new String[]{tabUnsignUpStr, tabSignUpStr};
 
         FragmentManager fm = getSupportFragmentManager();
         unSignUpFragment = (UnSignUpFragment) fm.findFragmentByTag(SPUtil.getInstance(this).getString(Constants.TAG_UN_SIGN_UP_FRAGMENT, Constants.TAG_UN_SIGN_UP_FRAGMENT));
@@ -92,10 +94,10 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
     public void setTabCount(int tag, int count){
         switch (tag){
             case Constants.TAG_UN_SIGN_UP_TAB:
-                titleTabs[0] = getString(R.string.un_sign_up,count);
+                titleTabs[0] = String.format(Locale.getDefault(),getString(R.string.un_sign_up),count);
                 break;
             case Constants.TAG_SIGN_UP_TAB:
-                titleTabs[1] = getString(R.string.sign_up,count);
+                titleTabs[1] = String.format(Locale.getDefault(),getString(R.string.sign_up),count);
                 break;
         }
         myFragmentPagerAdapter.notifyDataSetChanged();
