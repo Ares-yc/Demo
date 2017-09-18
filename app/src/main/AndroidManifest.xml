@@ -19,7 +19,8 @@
         <activity android:name=".activity.GankActivity">
 
         </activity>
-        <activity android:name=".activity.SignUpActivity">
+        <activity android:name=".activity.SignUpActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

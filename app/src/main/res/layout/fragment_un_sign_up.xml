@@ -6,5 +6,11 @@
     android:gravity="center"
     android:background="@android:color/white">
 
+    <include layout="@layout/layout_no_data"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_fragment_un_sign_up_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
