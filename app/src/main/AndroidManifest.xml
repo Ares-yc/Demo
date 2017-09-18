@@ -15,17 +15,20 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".activity.GestureSignUpActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.GankActivity">
-
-        </activity>
-        <activity android:name=".activity.SignUpActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.GankActivity">
+
+        </activity>
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:screenOrientation="portrait">
+
         </activity>
     </application>
 
