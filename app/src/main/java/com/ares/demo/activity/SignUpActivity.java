@@ -49,6 +49,8 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
         tabLayout = (TabLayout) findViewById(R.id.tl_activity_sign_up_tab);
         contentVp = (ViewPager) findViewById(R.id.vp_activity_sign_up_content);
 
+        titleTv.setText("签到");
+
         fragmentList = new ArrayList<>();
         String tabUnsignUpStr = String.format(Locale.getDefault(),getString(R.string.un_sign_up),0);
         String tabSignUpStr = String.format(Locale.getDefault(),getString(R.string.sign_up),0);
