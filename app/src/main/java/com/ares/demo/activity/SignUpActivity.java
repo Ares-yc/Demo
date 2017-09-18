@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SignUpActivity extends AppCompatActivity implements OnTabSelectedListener {
+public class SignUpActivity extends AppCompatActivity implements OnTabSelectedListener, OnClickListener {
 
     private ImageView backIv;
     private TextView titleTv;
@@ -38,7 +40,6 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
         initView();
         initListener();
     }
@@ -77,13 +78,14 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
         tabLayout.setupWithViewPager(contentVp);
         tabLayout.setOnTabSelectedListener(this);
 
-
-    }
-
-    private void initListener() {
         contentVp.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         contentVp.setOffscreenPageLimit(2);
         contentVp.setCurrentItem(0);
+    }
+
+    private void initListener() {
+        backIv.setOnClickListener(this);
+
     }
 
     /**
@@ -103,6 +105,15 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
                 break;
         }
         myFragmentPagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.iv_layout_base_title_back:
+                finish();
+                break;
+        }
     }
 
     @Override

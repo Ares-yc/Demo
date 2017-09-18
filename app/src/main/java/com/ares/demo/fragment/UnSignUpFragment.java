@@ -88,6 +88,12 @@ public class UnSignUpFragment extends Fragment implements OnRecyclerViewClickLis
         SignUpEntity entity7 = new SignUpEntity("阿瑞比斯","早退");
         SignUpEntity entity8 = new SignUpEntity("阿尔瑞斯","早退");
         SignUpEntity entity9 = new SignUpEntity("卡尔比斯","早退");
+        SignUpEntity entity10 = new SignUpEntity("尼古拉斯","早退");
+        SignUpEntity entity11 = new SignUpEntity("默罕默德","早退");
+        SignUpEntity entity12 = new SignUpEntity("耶和华","早退");
+        SignUpEntity entity13 = new SignUpEntity("本拉丹","早退");
+        SignUpEntity entity14 = new SignUpEntity("萨达姆","早退");
+        SignUpEntity entity15 = new SignUpEntity("卡扎菲","早退");
 
         List<SignUpEntity> datas = new ArrayList<>();
         datas.add(entity);
@@ -99,6 +105,12 @@ public class UnSignUpFragment extends Fragment implements OnRecyclerViewClickLis
         datas.add(entity7);
         datas.add(entity8);
         datas.add(entity9);
+        datas.add(entity10);
+        datas.add(entity11);
+        datas.add(entity12);
+        datas.add(entity13);
+        datas.add(entity14);
+        datas.add(entity15);
         updateDatas(datas);//测试数据
         //updateDatas(new ArrayList<SignUpEntity>()); // 测试无数据显示
     }
