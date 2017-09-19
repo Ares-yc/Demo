@@ -18,4 +18,9 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="PopupAnimation" mce_bogus="1" parent="android:Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/popb2t_enter</item>
+        <item name="android:windowExitAnimation">@anim/popb2t_exit</item>
+    </style>
+
 </resources>

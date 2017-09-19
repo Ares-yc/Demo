@@ -1,5 +1,7 @@
 package com.ares.demo.activity;
 
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
@@ -7,10 +9,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ares.demo.R;
 import com.ares.demo.adapter.MyFragmentPagerAdapter;
@@ -85,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
 
     private void initListener() {
         backIv.setOnClickListener(this);
-
+        titleTv.setOnClickListener(this);
     }
 
     /**
@@ -113,8 +124,67 @@ public class SignUpActivity extends AppCompatActivity implements OnTabSelectedLi
             case R.id.iv_layout_base_title_back:
                 finish();
                 break;
+            case R.id.tv_layout_base_title_text:
+                showFilterWindow();
+                Toast.makeText(SignUpActivity.this,"Title",Toast.LENGTH_LONG).show();
+                break;
         }
     }
+
+    public void showFilterWindow(){
+        // 自定义布局
+        View rootView = LayoutInflater.from(this).inflate(
+                R.layout.layout_filter_window, null);
+        rootView.setFocusable(true);
+        rootView.setFocusableInTouchMode(true);
+
+        FrameLayout defaultFl = rootView.findViewById(R.id.fl_layout_filter_window_default);
+        RecyclerView listRv = rootView.findViewById(R.id.rv_layout_filter_window_list);
+
+        PopupWindow popupWindow = new PopupWindow(rootView,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//        popupWindow.setAnimationStyle(R.style.PopupAnimation);
+        ColorDrawable cd = new ColorDrawable(0x000000);
+        popupWindow.setBackgroundDrawable(cd);
+        // 产生背景变暗效果，设置透明度
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.4f;
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+
+//        ColorDrawable cd = new ColorDrawable(Color.TRANSPARENT);
+//        popupWindow.setBackgroundDrawable(cd);
+
+        Rect frame = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        popupWindow.showAtLocation(titleTv, Gravity.TOP, 0, statusBarHeight
+                + findViewById(R.id.fl_layout_base_title_root).getHeight());
+        popupWindow.setOnDismissListener(new OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                //在dismiss中恢复透明度
+                WindowManager.LayoutParams lp=getWindow().getAttributes();
+                lp.alpha=1f;
+
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                getWindow().setAttributes(lp);
+            }
+        });
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.update();
+    }
+    private void darkenBackgroud(Float bgcolor) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgcolor;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+    }
+
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
